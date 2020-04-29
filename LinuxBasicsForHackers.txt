@@ -29,4 +29,7 @@ Each wireless interface has three modes:
 iwlist <interface> <action>
 iwlist wlan0 scan - displays all APs in range
 
+nmcli - network manager command line interface.
+nmcli dev wifi - displays APs
+
 
