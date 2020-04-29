@@ -1,0 +1,32 @@
+
+--Chapter 13 Becoming Secure and Anon--
+
+Setup proxies: 
+/etc/proxychains.conf
+proxychains <command> <args>
+
+Dynamic chaining - run through every IP in list - if fail is found, skipped
+
+Random chaining - every proxychains run will appear different to target
+
+paid proxy > free proxy
+
+The Onion Router System (Tor) - Allows anon routing through encrpytion of IPs except past IP.  Hides routing from commercial, but probably not NSA.
+
+Virtual Private Network - tunnels encrypted traffic to router - making traffic appear from router.  Useful for region restrictions. Requires trust in vpm provider to not share routing info 
+
+Proton mail - secure encrypted email
+
+--Chapter 14 Understanding and Inspecting Wireless Networks--
+ifconfig - displays all network interfaces
+iwconfig - displays wireless interfaces
+
+Each wireless interface has three modes:
+	managed: ready to join or has joined AP
+	master: ready to acto or has acted as an AP
+	monitor:
+
+iwlist <interface> <action>
+iwlist wlan0 scan - displays all APs in range
+
+
