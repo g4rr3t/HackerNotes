@@ -1,3 +1,14 @@
+Linux user basics:
+su - <username> = switches user
+sudo -s = switches user to root
+last = see who has or is currently logged in
+adduser <username> = adds new user - doesn't create home 
+passwd <username> = set new user password
+
+SSH basics:
+In root: sudo service start ssh
+On remote: ssh -l username ipOfHost
+
 
 --Chapter 13 Becoming Secure and Anon--
 
@@ -31,5 +42,81 @@ iwlist wlan0 scan - displays all APs in range
 
 nmcli - network manager command line interface.
 nmcli dev wifi - displays APs
+
+dBm - decibles relative to milliwat
+logrithmic scale.  3dB loss halves signal strength. 10dB gain increases signal strength by 10
+-30 dBm = amazing - very close to AP
+-67 dBm = very good - min strength needed for apps that require very reliable and timely delivery of data packets 
+-70 dBm = minimum recommended Wifi signal for web browsing - mostly reliable packet delivery
+-80 dBm = not good - min signal strength for basic connectivity - unreliable
+-90 dBm = unusable - approaching or drowning in noise - unlikely functionality
+
+--Chapter 15 Managing the Kernel Model and Loadable Kernel Modules (LKM)--
+Device drivers are usually installed directly on the kernel
+LKM - addable modules without recompiling the kernel, valuable target for hackers
+rootkit - malware that embeds into kernel of OS, often through LKM, allowing complete control of OS
+uname -a = check kernel version
+cat /proc/version = check kernal version
+sysctl tunes kernel options - permenant changes must be made at /etc/sysctl.conf
+sysctl -a = hundreds of parameters used to optimize kernel
+lsmod = lists installed modules
+insmod = old way to insert modules
+rmmod = removes modules
+modinfo <modname> = gets more info on mod and lists dependencies
+Modules may have dependencies, so installing separate ones may cause system to become unstable.  modprobe reduces this risk by understanding dependencies.
+modprobe -a <modname> = adds module
+modprobe -r <modname> = removes module
+dmesg | grep video = searches kernel messages for word containing video
+
+--Chapter 16 Automating Tasks with Job Scheduling--
+crond = deamon that checks the crontab for commands to run at specified times.
+crontab = located at /etc/crontab
+# =identifier
+m =minute (0-59)
+h =hour (0-23)
+dom = day of month(1-31)
+mon = month (1-2 or jan, feb, mar...)
+dow = day of week (0-7, sunday is 0 or 7, or sun,mon,tues...)
+commas and ranges work, *=every
+Shortcuts:
+@yearly
+@annualy
+@monthly
+@weekly
+@daily
+@midnight
+@noon
+@reboot
+example: @midight user /bin/backup.sh
+
+rc scripts = run at startup to setup environment
+After kernal initialization and loaded modules, kernal starts a deamon called initd, 
+	which runs scripts found in /etc/init.d/
+	Which init script is run is determined by runlevel:
+	0 Halt system
+	1 Single-user minimal mode
+	2 user definable
+	3 full multi-user mode
+	4 user definable
+	5 full multi-user graphical mode x11 based
+	6 Reboot
+To add services to run at startup, add to rc.d script:
+update <name of script or service> <remove|defaults|disable|enable>
+
+--Chapter 17 Python Scripting Basics for Hackers--
+sudo apt-get install python3-pip = installs python and default packages
+pip3 show <packagename> = displays pacakge information
+python3 setup.py install = installs unpacked packages that have yet to be installed
+To install 3rd party packages:
+	wget <url of tar.gz file>
+	tar -xzf <tar.gz file>
+	cd <name of tarball>
+	python setup.py install
+
+
+
+
+
+
 
 
