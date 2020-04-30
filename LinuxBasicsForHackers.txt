@@ -10,6 +10,43 @@ In root: sudo service start ssh
 On remote: ssh -l username ipOfHost
 
 
+--Chapter 1 Getting Started with Basics--
+Linux filesystem:
+/root Superuser's home dir
+/boot kernel image
+/etc system confi files
+/home user home dirs
+/mnt General purpose mount point
+/proc view of internal kernel data
+/sys kernel's view of HW
+/dev special device files
+/bin binaries
+/sbin special binaries
+/lib libraries
+/usr/lib more libraries
+/usr/sbin more binaries
+
+whoami = current user
+locate <file> = returns list of file across filesystem
+whereis <bin or program> = locate for binaries/programs
+which <program> = returns path of program executed in PATH variable occurance
+find <dir> <options> <expression> 
+ps aux = show running processes
+ps aux | grep apache2 = only return processes that have apache2
+cat <file> = concatenate, print file to screen
+> = redirect, send contents to file, overwrites existing
+>> = append contents to file
+touch <file> = create empty file
+mkdir <dir> = creates empty directory
+cp <from path> <to path> = copy
+mv <from path> <to path> = move/rename
+rm <file> = removes file
+rm -r <dir> = recursive delete
+
+--Chapter 2 Text Manipulation--
+
+
+
 --Chapter 13 Becoming Secure and Anon--
 
 Setup proxies: 
