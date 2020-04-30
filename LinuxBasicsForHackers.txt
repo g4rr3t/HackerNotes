@@ -44,6 +44,32 @@ rm <file> = removes file
 rm -r <dir> = recursive delete
 
 --Chapter 2 Text Manipulation--
+head <file> = view first 10 lines
+tail <file> = view last 10 lines
+nl <file> = display file with line numbers
+sed <from> <to> = replaces instances of from with to
+less <file> = view file
+
+--Chapter 3 Analyzing and Managing Networks--
+ifconfig = show network interfaces
+iwconfig = show wireless interfaces
+ifconfig <interface> <IP> = changes IP
+/etc/hosts = host file, maps names to IPs
+
+--Chapter 4 Adding and Removing Software--
+apt-get update = important! updates the local package list and dependencies reducing dependency hell
+sudo apt-get upgrade = upgrades all packages installed and dependencies
+/etc/apt/sources.list = list of repos apt-get uses
+sudo apt-get install <program>
+apt-get remove <program>
+apt-get purge <program> = also deletes configuration files
+apt autoremove <program> = removes dependencies
+
+--Chapter 5 Controlling File and Directory Permissions--
+r = read
+w = write/modify
+x = execute
+
 
 
 
