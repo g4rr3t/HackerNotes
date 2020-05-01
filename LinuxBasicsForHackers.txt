@@ -70,6 +70,18 @@ r = read
 w = write/modify
 x = execute
 
+chown <user> <file> = change ownership of file
+chgrp <group> <file> = grants ownership of file to group
+chmod +/- wrx, ... <file> = changes permission on file
+chmod 777 <file> = sets permissino on file
+Users can set umask, which subtracts from default permissions when creating new files and directories
+suid = set user id = states that any user can execute the file with permissions of the owner but those
+	permissions don't extent beyond the use of that file. SUID is set by prepending a 4 to representation, ie 4644
+	It's also represented as an s, in place of the x when viewing file permissions
+sgid = set group id = grants temporary elevated permissions of the file owner's groups, instead the file's owner.
+	used for when a group shares a directory, users of the same group can execute each other's files. Represented
+	by 2, ie. 2644
+
 
 
 
