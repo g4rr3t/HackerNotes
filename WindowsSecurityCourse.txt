@@ -1,0 +1,113 @@
+Windows Security Course
+
+Windows NT is a family of operating systems produced by Microsoft, the first version of which was released on July 27, 1993. 
+    It is a processor-independent, multiprocessing and multi-user operating system.
+    Windows NT is a line of OS
+    Windows NT 6.1 = Win 7, 6.2 = Win 8, 6.3 = Win 8.1, 10 = Win 10
+
+Windows NT breaks 
+
+Execution modes
+    User Mode 
+        Apps and many services run in user mode
+            Can only access their own address space
+            Are separated from OS kernal by win32 API
+    Kernal Mode
+        Full access
+        OS runs in kernal mode
+        Allows direct accses to memory, HW and apps
+        Advanced CPU features and IO management
+        Also known as protected mode or ring 0
+        Ring protection  User mode outside kernal mode.
+        Idea of OS constraining the user... not users constraining themselves because
+            users were not good at constraining self
+
+
+
+Authenticode - used to verify the source downloaded to ensure it's trusted
+Environment Subsystem - allows applications that were written for different OS to run
+    Win32 - standard MS Windows programs
+    POSIX - Subsystem for unix-based apps
+Integral Subsystem - contains subsystems provided with Windows
+    Security
+    Server service
+    Worstation service
+
+        Native apps V
+App -> POSIX -> Win32 -> Kernal (Executive Service)
+
+Kernal Mode
+    Executive Service
+        Provides common service available to all of the OS
+        I/O Manager
+        Security Reference Monitor
+        Windows Manager
+        Process Manager
+        Object Manager
+        Power Manager
+        IPC Manager
+        Others
+
+    Hardware Abstraction Layer
+        Provides an interface to HW
+        Effectively allows the OS to run on multiple HW platforms by hiding or abstracting characteristics of the platform
+
+Windows Security Model
+    Windows is developed using a security development lifecycle
+
+Code scanning tools
+    Security tools designed to find SECURITY bugs in source code
+    Static analysis tools - effective at finding errors that lead to vulnerabilities like buffer overflows
+    Fuzz-testing tools - inject random data into application to see what happens
+Code Review and Security testing
+    Tools are not enough, human eyes are necessary
+Security Testing
+    Designed to test the security
+
+Windows API application programming interface
+    contains a collection of .dll files - dynamic link library
+        library of code, promoting code reuse and provides efficient memory usage
+    User32.dll - handles user interface functions
+    Kernal32.dll - file operations, memory management
+    Ggi32.dll - involved in graphical presentation
+
+    DLL dependency - program or function that calls a function in another DLL, source of program failure when one fails to load
+    Solving depenency issue
+        Windows file protection
+            prevents system DLLs from update or deletion from unauthorized agent by looking for valid signature
+        Private DLLs
+            located in programs root folder
+            A .local file enforces use of specified DLL version
+
+Windows Registry
+    Collection of information about the system and users including
+        HW
+        Installed programs and settings
+        User profiles and preferences
+    A database, its a collection of discrete files called Hives
+        each hive contains a registry tree.  At the base of the tree is a key that serves as the root key
+    Registry structure
+        5 root keys
+            HKEY_CLASSES_ROOT
+            HKEY_CURRENT_USER
+            HKEY_LOCAL_MACHINE
+            HKEY_USERS
+            HKEY_CURRENT_CONFIG
+        Beneath the 5 root key are sub keys and values
+        Values are the actual data stored in the keys and subkeys
+            string, binary or DWORD(double word)
+            others exist
+        Registry Hives
+            Tree structure
+    Registry recommendations
+        Backup the registry before making changes
+        edit carefully
+        limit the number of people who can access the registry
+        Do not leave the registry editor running and unattended
+        Do not run the registry editory as administrator, except when absolutely necessary
+        
+
+
+
+
+

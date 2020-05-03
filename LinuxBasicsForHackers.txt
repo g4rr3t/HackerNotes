@@ -82,8 +82,87 @@ sgid = set group id = grants temporary elevated permissions of the file owner's 
 	used for when a group shares a directory, users of the same group can execute each other's files. Represented
 	by 2, ie. 2644
 
+find / -user root -perm -4000 = finds all files with suid bit set
 
+--Chapter 6 Process Management--
+ps = view processes in order they were started
+ps aux = view all processes for all users
+ps aux | grep <program name> = finds process
+top = view processes ordered by resource usage
+press R to change priority of processes
 
+niceness priority value = -20 most likely to recieve prority   0 default    19 least likely to receive proirity
+nice -n -10 <process> = starts a new process, increases the priority by 10 
+only root can increase priority, anyone can decrease priority of their own proces (nice)
+renice 19 <pid> = reduces the priority of the process at pid
+
+kill -1 <pid> = restarts pid
+kill -9 <pid> = absolute kill signal
+killall -9 <processname> = absolute kill signal
+vi <file> & = run vi in background
+fg <pid> moves process to foreground
+
+to start a process later:
+at <time>  press enter  <scriptname>   enter
+
+--Chapter 7 Managing User Env Variables--
+env = view default environment variables
+set | more = view all system variables
+<VARNAME> = <value>    sets variable name for terminal
+export <varname>   makes variable change permenant
+PS1=<string>    changes prompt, use \w for path
+PATH=$PATH:/added/path    add to variable
+
+--Chapter 8 Bash Scripting--
+#! /bin/bash    use bash shell interpreter
+chmod +x <scriptname>   add execute permissions
+./<scriptname>    executes script
+
+--Chapter 9 Compressing and Archiving--
+tar -cvf <filename> <filename> <filename> = create archive
+tar -tvf <tarname>  = displays contents
+tar -xf <tarname> = extracts contents
+
+Compressing options:
+bzip2 = slowest, files are smallest
+gzip = inbetween
+compress = fastest but files are larger
+dd if=<inputfile> of=<outputfile> conv:noerror   deep copies entire fileystems slowly, ignoring errors
+
+--Chapter 10 Filesystem and storage device management--
+/dev 	the device directory
+sda		first SATA HD
+sda1	first partition
+sda2	second partition
+
+sdb		second SATA HD
+
+fdisk -l 	 check capacity of devices
+
+Device types
+ls -l	permissions begin with c or b. c stands for character, external devices that flow data to and from
+b devices are block devices, communicate with blocks of data, multiple bytes at a time like a HD
+lsblk	lists info on block devices 
+mount <from> <to>	create a logical location for new physical device
+
+df	provides with basic info on any HD or mounted devices, showing available space
+fsck	filesystem check, checks for errors and attempts repair
+
+--Chapter 11 The Logging System--
+syslogd		logging daemon
+rsyslog.conf	logging configuration file
+	Logging rules listed as facility.priority		action
+	Priority list (low to high): debug, info, notice, warning, warn, error, err, crit, alert, emerg, panic
+
+Cleaning logs with logrotate
+/etc/logrotate.conf		determines how often logs are cleared/rotated
+shred --help			deletes without a trace
+
+disabling logging (requires sudo)
+service rsyslog stop
+
+--Chapter 12 Using and Abusing Services--
+service <servicename> start|stop|restart
 
 --Chapter 13 Becoming Secure and Anon--
 
