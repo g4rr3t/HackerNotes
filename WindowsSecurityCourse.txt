@@ -105,7 +105,61 @@ Windows Registry
         limit the number of people who can access the registry
         Do not leave the registry editor running and unattended
         Do not run the registry editory as administrator, except when absolutely necessary
+
+Authenticode
+    A means of code signing that allows user to verify the source and integrity of the signed software
+        A software publisher obtains a digital certificate from a CA
+        The publisher of the software creates a digital signature by encrypting a hashed representatinon of the software with the others private key
+        After downloading the software, the recipient verifies the signatre by decrypting it using the publisher's public key
+        Certificate binds owner to key
+        How does one know whos public key one has?
+        X.509 standard defines digital certiificate specification
+
+Threats and vulnerabilities
+    Attacker motivation and rationale
+        Black hat - malicious
+        White hat - find vulnerabilities so they can be fixed
+        Gray hay - Attack purpose is very debatable, actions are justifiable good by the attacker, but more harm than good could be caused
+    Types of attackers
+        cyber terrorists - attacks usually at a nation state level
+        hacktivists - hackers with a specific cause - anonymous
+        script kiddies - unskilled hackers
+    Attackers' Goals
+        Different goals and motivation of attackers
+            Revenge
+                From disgruntled customers to nation state enemies
+            Money
+                Sell credit card numbers etc
+            Proof of skill
+            Boredom
         
+        Threats X Vulnerabilities X Asset Value = Total risk
+    
+“The best that program analysis tools can do in my experience
+is to transform programmers into better programmers,
+meaning you still have one error per 1000 lines of code.”
+
+Microsoft common vulnerabilities and exploits (CVE)
+    Print Spooler CVE - allows attackers to execute arbitrary code execution
+    Kernal Mode Driver - crafted in TrueTypeFont file - victim opens malicious TTF file
+    Microsoft XML - 
+    Use after free - memory leakage attack - in IE
+    CVE Metaslpoit framework - collection of attack tools 
+
+
+
+    
+
+
+
+
+
+
+
+
+    
+
+
 
 
 
