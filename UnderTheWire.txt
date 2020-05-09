@@ -1,0 +1,55 @@
+ssh centuryX@century.underthewire.tech -p 22
+
+1: century1
+2: 10.0.14393.3383
+find build version $psversiontable
+3: invoke-webrequest443
+Count files in a dir
+Write-Host (dir . | measure).Count
+
+4: 123
+5: 61580
+6: underthewire3347
+get domain information: Get-ADDomain
+7: 197
+to return a list of files that match the string:
+gci -recurse -filter "filematch*"
+
+to get-contents of file (aka print to screen):
+gc file
+8: 7points
+Count unique lines in file
+gc file.txt | sort-object | unique-object | Measure-Object -line
+
+9: 696
+find 161st word in a file:
+((gc .\file).split(" "))[160]
+10:pierid
+Find description of service:
+ Where-Object {$_.Name -eq 'name of service'} | Select-Object -ExpandProperty Description
+11: windowsupdates110
+Messy way to display all files and folers:
+Get-ChildItem -Recurse -Force
+dir
+Display structure as a tree
+tree /f 
+12: secret_sauce
+Get description of domain controller:
+Get-ADComputer
+to find name, then
+Get-ADComputer "name" -Properties Description
+
+Shows all properties, not just the default ones returned by cmdlet
+-Properties * 
+
+13:i_authenticate_things
+
+Count words in file:
+((gc .\countmywords).split(" ")).Count
+
+14:755
+Count occurances of words:
+$words = ((gc .\textfile).split(" ")) | sls "pattern"
+$words.Count
+
+15:158
