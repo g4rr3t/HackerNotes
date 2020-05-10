@@ -1,3 +1,6 @@
+Notes from the book:
+Linux Basics for Hackers by OTW
+
 Linux user basics:
 su - <username> = switches user
 sudo -s = switches user to root

@@ -1,3 +1,5 @@
+https://underthewire.tech/wargames.htm
+
 ssh centuryX@century.underthewire.tech -p 22
 
 1: century1
