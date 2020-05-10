@@ -192,7 +192,7 @@ Each wireless interface has three modes:
 	monitor:
 
 iwlist <interface> <action>
-iwlist wlan0 scan - displays all APs in range
+iwlist <wlan0> scan - displays all APs in range
 
 nmcli - network manager command line interface.
 nmcli dev wifi - displays APs
@@ -204,6 +204,8 @@ logrithmic scale.  3dB loss halves signal strength. 10dB gain increases signal s
 -70 dBm = minimum recommended Wifi signal for web browsing - mostly reliable packet delivery
 -80 dBm = not good - min signal strength for basic connectivity - unreliable
 -90 dBm = unusable - approaching or drowning in noise - unlikely functionality
+
+
 
 --Chapter 15 Managing the Kernel Model and Loadable Kernel Modules (LKM)--
 Device drivers are usually installed directly on the kernel
