@@ -315,7 +315,7 @@ class Flow:
 		s += '</tr>\n'
 		
 		r =  '<html>\n'
-		r += '<title>Flow %i Information\n' % self.flow_id
+		r += '<title>Flow %i Information</title>\n' % self.flow_id 
 		r += '<body>\n'
 		r += '<h1>Flow %i</h1>\n' % self.flow_id
 		r += '<h2>Summary</h2>\n'
