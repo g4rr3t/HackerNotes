@@ -1,0 +1,116 @@
+Powershell basics
+https://tutorials.cyberaces.org/tutorials/view/3-2-3.html
+
+
+Execution Policy:
+Default execution policy is Restricted: powershell will only operate as an interactive shell without scripting
+    AllSigned: only signed scripts can run
+    RemoteSigned: Remote scripts must be signed, local scripts do not have to be signed
+    Unrestricted - All scripts, no signing
+Get-ExecutionPolicy         gets current policy
+Set-ExecutionPolicy <name>
+Powershell can be launched with a specify policy using -ExecutionPolicy
+Powershell.exe -exec Bypass
+
+Variables
+Prefixed with $
+$a = 7
+$a
+7
+
+Types
+[int]$a = 7         use brackets to cast types
+$a = "text" --error
+
+Arrays
+$days = "Sun","Mon","Tues","Thurs"
+$o = dir C:\
+To access:
+$days[0]
+$days[2..3]     expresses a range, sub array
+$days[-1]       refers to the last item in the array
+$days.length    shows the number of objects in array
+
+Special Variables
+$_ Current pipeline object - used in script blocks (Where-Object,  ForEach-Object, Switch), can be omitted after PS v3
+Other common variables: $true, $false, $null
+Get-ChildItem variable      displays contents
+
+Parenthesis
+(Get-Date).DayOfWeek    used to get properties of object
+(Get-ChildItem)[0]      used to access arrray elements by grouping output
+used to group control statements:
+if ($num -gt 7) {}
+ForEach($f in $files) {$f.Name}
+
+Curly braces {} aka Script Blocks, commands inside other commands - used in cmdlets above
+ls | % { $_.length / 1024}      prints the length of each file divided by 1024 - % is ForEach-Object alias
+ls | ? { $_.length -gt 1000}    lists files int he current directory with a size greater than 1000 bytes
+
+Square brackets []  - type declaration, arrays, regex
+
+Quotes " ' mostly interchangable - except when a variable is referenced
+Write-Host "Hey $a"   outputs Hey Garret
+Write-Host 'Hey $a'   outputs Hey $a
+use single quote to escape dollar signs
+need to use $() to wrap an object's property
+
+Flow Control and Output
+Operators - perl based
+    -eq equal
+    -ne not equal
+    -gt greater than
+    -lt less than
+    -le less or equal
+    -ge greater or equal
+    -match regex match
+    -notmatch negative regex match
+    -like   wildcard match
+    -notlike neg wildcard match
+Logical
+    -and
+    -or
+    -xor
+    -not
+
+Where-Object Filtering alias ? - if the script block returns true, then the object is passed down the pipeline
+ls -Recurse | ? { $_.Length -ge 200000} | del       recurses through filesystem deleting files larger than 20000 bytes
+
+ForEach-Object alias %  Operates on each object in the pipeline
+ls | % {Move-Item -Path $_ -Destination $_.FullName.ToUpper() }    sets all files to uppercase
+
+Select-Object alias select, used to filter out properties so only certain properties are passed down the pipeline
+ls | Select-Object Name,Length      less data down the pipeline can mean increased speed
+
+Output and Format Verb
+Format-Table alias ft is default
+ps | ft Name, Id, Handles
+
+List is another format Format-List alias fl
+ps | fl
+Name:explorer
+Handles:710
+
+ps | fl *       displays all properites
+
+File Output
+Out-File    sends output to file, redirect operator > works as well
+Export-CSV  saves objects as objects in the csv format
+Import-CSV  loads csv contents
+
+Examples
+1..254 | % {ping "192.168.0.$_"}    pings all hosts on network with /24 mask
+
+ps | ? {$_.Path -like "C:\Users\ephil\*"} | kill        kills all exe running on phils desktop
+
+ls -fo -fi *.txt -r | select-string pass    recurse search for files that contain the string pass
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,200 @@
+Description: 
+Answers and Tool Development Notes for:
+  SANS Digital Forensics and Incident Response Challenge
+  "Ann's Aurora - An Advanced Persistent Threat based challenge"
+
+Wesley McGrew
+wesley@mcgrewsecurity.com
+http://mcgrewsecurity.com
+
+Mississippi State University
+National Forensics Training Center
+
+--------------------------
+
+Table of Contents:
+ [Introduction]
+ [Pcapline]
+   [[Description]]
+   [[Requirements]]
+   [[Usage]]
+   [[Caveats]]
+ [Answering the Questions]
+
+--------------------------
+
+[Introduction]
+--------------
+
+This report represents my submission for this network forensics challenge.  The deliverables requested by the organizers for this challenge include: generating a timeline of the packet analysis, and answers for the "Contest Questions".  
+
+I have developed a tool, "Pcapline", that generates a report that an examiner with some experience in network forensics can use to quickly, and without much effort, find answers to the contest's questions.  Pcapline generates a timeline of the "flows" of data within a pcap file, and presents the data within the flows to the examiner in a handful of useful formats.  Outside of this contest, the Pcapline tool has a lot of potential for forensic analysis of packet data, as well as in the reverse engineering of network protocols.
+
+[Pcapline]
+----------
+[[Description]]
+
+Pcapline is a python tool for processing network traffic in a .pcap file into a timeline that describes the flow of data between hosts on the network.  Pcapline has the following features:
+
+* HTML reports that allow for easy navigation/importing into a larger report
+* Generates a summary of flows between hosts on the network
+* Flows are broken up by segments representing parts of the conversation
+* Segments are dissected, carved, hashed.  Currently, Pcapline supports:
+** HTTP GET Requests
+** HTTP Responses - Extracts and hashes contents
+** Forensics Challenge malware file transfers
+** Other data segments are presented as text, hex dumps, or raw content
+
+Carved/extracted data are not given correct file extensions to prevent them from inadvertently triggering vulnerabilities on the examiner workstation. 
+
+While Pcapline was developed specifically for this contest, it shows promise for use in network forensics in general.  It seems worthwhile to continue development of it, especially to add new dissectors/carvers.
+
+[[Requirements]]
+
+The following is required to run Pcapline:
+
+* Python 2.6
+* Scapy 2.1.0 (packet manipulation library)
+* 'file' - Unix/Linux command-line utility for identifying file types
+
+Pcapline was developed and tested on Mac OS X, using the py26-scapy package available in MacPorts, and the 2.6 version of python that is installed by MacPorts as a scapy dependency.  In this environment, the first line of pcapline.py is as follows:
+
+  #!/opt/local/bin/python2.6
+
+On other operating systems, this line will need to change to reflect the location of the python binary associated with the version of scapy that is installed.  It should be relatively simple to get this running in Linux.  In Windows, it should run, but would require a Windows version of 'file'.  The easiest way to fulfill this requirement might be to run it within the Cygwin environment.
+
+[[Usage]] 
+
+Pcapline only has one command line argument: the input pcap file.  It is easy to run from the command line, as can be seen here:
+
+  HacBookNano:sans_forensics wesley$ ./pcapline.py evidence06.pcap 
+  WARNING: No route found for IPv6 destination :: (no default route?)
+  [*] Pcapline v0.8
+  [*] Processing pcap
+  [*] Generating report
+  HacBookNano:sans_forensics wesley$
+
+The report output by Pcapline is in a new directory created by Pcapline, named <inputfilename>_output/ .  In the above example, the report is in a directory named "evidence06.pcap_output".
+
+If you do not have Pcapline up-and-running and would like to see the report that it generates for the challenge's pcap, I have uploaded the report to the following address:
+
+  http://mcgrewsecurity.com/codedump/evidence06.pcap_output/
+  
+[[Caveats]]
+
+Pcapline, like any forensics tool, has limitations that are important for forensic examiners to understand:
+
+The focus is on examining the contents of data being sent over TCP and UDP between hosts on a network.  Pcapline is not currently useful in looking at other transport protocols, and lower-level protocols.  
+
+Non-Data packets that precede or come between segments of data traffic *are* displayed, primarily so an examiner can see attempted connections, connection establishment, and teardown.  Non-data packets that occur during a segment of data traffic, however, is *not* represented in the report, for the sake of making the reports shorter and easier for the examiner to process.  These are normally ACK packets associated with the current transfer between the two hosts, but it's conceivable that it could miss something "sneaky".
+
+A malicious user/script/malware on the network could almost certainly craft packets to subvert or overwhelm Pcapline's ability to generate a correct and readable report.  This is the case with any network forensics software, and it's important for an examiner to realize that packets can be spoofed in such a way to make using that software tedious or non-productive.
+
+[Answering the Questions]
+-------------------------
+
+It's a simple matter to generate a timeline and answer the challenge's questions with Pcapline.  Here, I'll go through the steps needed to generate the report, and how to read the report in order to answer the questions.
+
+First, we verify that the pcap file hasn't been modified or corrupted in-transit:
+
+  HacBookNano:sans_forensics wesley$ md5 evidence06.pcap
+  MD5 (evidence06.pcap) = efac05c50c0ae92bf0818e98763920bd
+
+This matches the hash for the pcap file available at http://computer-forensics.sans.org/challenges/
+
+Next, we run pcapline to generate the report:
+
+  HacBookNano:sans_forensics wesley$ ./pcapline.py evidence06.pcap 
+  WARNING: No route found for IPv6 destination :: (no default route?)
+  [*] Pcapline v0.8
+  [*] Processing pcap
+  [*] Generating report
+  HacBookNano:sans_forensics wesley$
+
+The report is now in a new directory, named 'evidence06.pcap_output'.  If you're following along and you don't have Pcapline or its dependencies up-and-running, you can view the generated report at the following address:
+
+  http://mcgrewsecurity.com/codedump/evidence06.pcap_output/
+
+(Note that there is live malware extracted in this report.  Filenames have been changed to prevent them from executing/exploiting, but you should still exercise due care.)
+
+Now that we have the report, we can begin answering the challenge's questions: 
+
+1. "What was the full URI of Vick Timmes' original web request? (Please include the port in your URI.)"
+
+We can see from the flow summaries in evidence06.pcap_output/index.html that "Flow #0001" involves a connection from Vick Temmes' laptop (10.10.10.70) to a common web port on another computer (IP:Port : 10.10.10.10:8080).  If, in the report, we click to view that flow, we can see that the first data segment (consisting only of packet 1) is a HTTP GET request for http://10.10.10.10:8080/index.php .
+
+2. "In response, the malicious web server sent back obfuscated JavaScript. Near the beginning of this code, the attacker created an array with 1300 elements labeled "COMMENT", then filled their data element with a string. What was the value of this string?"
+
+Scrolling down a bit, the next data segment in Flow 1's report (evidence06.pcap_output/0001/index.html) is detected as a HTTP response.  If we "View as Text", we can read the JavaScript.  Near the top, it's easy to identify the loop that is populating the 1300, and to see that .data for each element is being set to "vEI".
+
+3. "Vick's computer made a second HTTP request for an object.
+      What was the filename of the object that was requested?
+      What is the MD5sum of the object that was returned?"
+
+Still in the same flow, we can see that the next data segment is detected as a HTTP GET request for a file named 'index.phpmfKSxSANkeTeNrah.gif'.  The following data segment is the response (a gif image), which Pcapline carved out and hashed.  The MD5 hash for this object is 'df3e567d6f16d040326c7a0ea29a4f41'
+
+4. "When was the TCP session on port 4444 opened? (Provide the number of seconds since the beginning of the packet capture, rounded to tenths of a second. ie, 49.5 seconds)"
+
+Going back to the list of flows (evidence06.pcap_output/index.html), we see that the next flow, #0002, involves port 4444.  We can also see that the first packet of this flow arrived at 1.3 seconds, relative to the time-of-arrival of the first packet in the pcap.
+
+5. "When was the TCP session on port 4444 closed? (Provide the number of seconds since the beginning of the packet capture, rounded to tenths of a second. ie, 49.5 seconds)"
+
+On the same line, we can see that the last packet for this session arrived at 87.6 seconds.
+
+6. "In packet 17, the malicious server sent a file to the client.
+    What type of file was it? Choose one:
+      Windows executable
+      GIF image
+      PHP script
+      Zip file
+      Encrypted data
+    What was the MD5sum of the file?"
+
+>From the list of flows (evidence06.pcap_output/index.html), we see that packet 17 is associated with flow #0002.  If we click to view that flow's report (evidence06.pcap_output/0002/index.html), we see that packet 17 is associated with the first data segment of this flow.
+
+When I first ran Pcapline on this pcap file, I viewed this data segment as hex, and recognized the PE header beginning only 4 bytes away from the start of the segment.  I decoded the four bytes that preceded the PE header as a little-endian 4-byte unsigned integer, and it happened to be the length of the rest of the data segment.  This indicated to me that the server sent a 4-byte value describing the length of the data to be sent before it was actually sent.
+
+Using this information, I added a carver to Pcapline that detects this kind of transfer (length + content), carves out the content, detects the filetype, and hashes it.
+
+Now, just by viewing this segment in its flow's report (evidence06.pcap_output/0002/index.html), it's easy to see that it is a Windows executable with an MD5 hash of b062cb8344cd3e296d8868fbef289c7c .
+
+7. "Vick's computer repeatedly tried to connect back to the malicious server on port 4445, even after the original connection on port 4444 was closed. With respect to these repeated failed connection attempts:"
+
+  "How often does the TCP initial sequence number (ISN) change? (Choose one.)
+  Every packet
+  Every third packet
+  Every 10-15 seconds
+  Every 30-35 seconds
+  Every 60 seconds"
+
+By examining the non-data packets in flows 3,4,6,7,8,9,10 and 11, we can see that the sequence number for the SYN packets coming from 10.10.10.70 for these attempted connections changes after every third packet.
+
+  "How often does the IP ID change? (Choose one.)
+  Every packet
+  Every third packet
+  Every 10-15 seconds
+  Every 30-35 seconds
+  Every 60 seconds"
+
+Looking at the same packets, we can see that the IP ID changes for every packet 10.10.10.70 sends to attempt a connection.
+
+  "How often does the source port change? (Choose one.)
+  Every packet
+  Every third packet
+  Every 10-15 seconds
+  Every 30-35 seconds
+  Every 60 seconds"
+
+Each time the source port changes, Pcapline creates a new flow entry in the main page of the report (evidence06.pcap_output/index.html).  If we look at the start times of each of these flows, we see that the time between source port number changes for 10.10.10.70's attempted connections is between 10 and 15 seconds.
+
+8. "Eventually, the malicious server responded and opened a new connection. When was the TCP connection on port 4445 first successfully completed? (Provide the number of seconds since the beginning of the packet capture, rounded to tenths of a second. ie, 49.5 seconds)"
+
+On the last flow, we can scroll past the attempted connections to find the first established connection to port 4445.  Here, we can see that the handshake (packets 1656, 1657, and 1658) completed at 123.7 seconds.
+
+9. "Subsequently, the malicious server sent an executable file to the client on port 4445. What was the MD5 sum of this executable file?"
+
+This file was sent in the same way as the previous executable, so Pcapline is able to carve out this executable too.  The MD5 hash of this executable is b062cb8344cd3e296d8868fbef289c7c .  This is the same hash as the other executable as well, indicating that they are the same file with the same contents.
+
+10. "When was the TCP connection on port 4445 closed? (Provide the number of seconds since the beginning of the packet capture, rounded to tenths of a second. ie, 49.5 seconds)"
+
+If we look at the main report (evidence06.pcap_output/index.html), or the bottom of the last flow's report, we can see that the connection was torn down at 198.4 seconds.
