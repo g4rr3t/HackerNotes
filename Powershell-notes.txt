@@ -1,6 +1,9 @@
 Powershell basics by cyberaces
 https://tutorials.cyberaces.org/tutorials/view/3-2-3.html
 
+Check current TCP connections, mapped to processes
+on cmd line: 
+netstat -abnp TCP
 
 Execution Policy:
 Default execution policy is Restricted: powershell will only operate as an interactive shell without scripting
